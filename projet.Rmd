@@ -7,5 +7,47 @@ Notebook
 
 Question 1:
 ```{r}
-#load("donnees/recettes-pays.data")
+recettes_pays <- read.csv("donnees/recettes-pays.data", header=T, sep=",")
+head(recettes_pays)
+recettes_pays_quant = recettes_pays[,-1]
 ```
+
+```{r}
+print(nrow(recettes_pays))
+print(length(unique(recettes_pays[,1])))
+print(ncol(recettes_pays))
+print(min(recettes_pays_quant))
+print(max(recettes_pays_quant))
+print(sum(is.na(recettes_pays_quant)))
+boxplot(recettes_pays_quant)
+#summary(recettes_pays)
+```
+
+```{r}
+library(corrplot)
+M <- cor(recettes_pays_quant)
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+corrplot(M, method = "color") #trop de variables...
+```
+
+
+Question 2:
+```{r}
+res <- prcomp(recettes_pays_quant)
+summary_ACP = summary(res)
+print(summary_ACP)
+barplot(summary_ACP$importance[2,])
+title(main='Pourcentages d\'inertie expliquée par chaque axe de l\'ACP \n par ordre décroissant.', ylab='pourcentage d\'inertie expliquée')
+#(res$sdev)^2 # Les valeurs propres
+#res$loadings # Les vecteurs propres
+#res$scores # Le nouveau tableau individus-variables
+```
+
+
+
+
+
+
+
+
+
