@@ -7,5 +7,5 @@ Notebook
 
 Question 1:
 ```{r}
-load("donnees/recettes-pays.data")
+#load("donnees/recettes-pays.data")
 ```
