@@ -206,7 +206,26 @@
         \item Amérique centrale et du sud, méditerranée, l'Inde, l'Afrique, avec un indice de 8 qui traduit une certaine hétérogénéité par rapport à l'occident par exemple
     \end{itemize}
 
+    \subsection*{Question 4}
 
+    Nous commençons par chercher quel serait un \"bon\" nombre de classes à choisir:
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{imgs/K_means_choix_K.png}
+        \caption{Inertie intraclasse en fonction du nombre de classes choisi}
+        \label{fig_K_means_choix_K}
+    \end{figure}
 
+    En utilisant la règle du coude un nombre de classes est 3.
+    Ce nombre est en adéquation avec la classification hiérarchique ascendante que nous avions obtenue dans la question précédente.
+    En effet nous avions déjà identifié 3 groupes.
+
+    Nous obtenons la classification suivante:
+    \begin{tabular}{lll}
+        1.1 & 1.2 & 1.3 \\
+        2.1 & 2.2 & 2.3 \\
+     \end{tabular}
+
+     
     \end{document}
 

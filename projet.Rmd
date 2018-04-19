@@ -58,17 +58,23 @@ Cercle des corrélations pour le plan 1,2: est-il bon?? comment le rendre lisibl
 ```{r}
 n=dim(recettes_pays_quant)[1]
 matrix_recettes_pays_quant <- as.matrix(recettes_pays_quant)
-V <- (1/n)*t(matrix_recettes_pays_quant) %*% matrix_recettes_pays_quant
+matrix_recettes_pays_quant_centre <- scale(x = matrix_recettes_pays_quant, center = TRUE, scale = FALSE)
+V <- (1/n)*t(matrix_recettes_pays_quant_centre) %*% matrix_recettes_pays_quant_centre
 tmp <- eigen(V, symmetric=TRUE)
 L <- diag(tmp$values)[c(1:n),c(1:n)] #on retire les valeurs propres nulles
-correlations <- (1/n) * (t(matrix_recettes_pays_quant)%*%as.matrix(ACP_res)) / (sqrt(diag(V))%*%t(sqrt(diag(L))))
-print(dim(correlations))
-print(correlations)
-print(t(correlations[1,])%*%correlations[1,])
+print(dim(ACP_res))
+correlations <- (1/n) * (t(matrix_recettes_pays_quant_centre)%*%as.matrix(ACP_res)) / (sqrt(diag(V))%*%t(sqrt(diag(L))))
+#print(correlations)
+print(t(correlations[1,])%*%correlations[1,]) #vérification
+print(t(correlations[3,])%*%correlations[3,]) #vérification
 corr_1_2 <- correlations[,c(1,2)]
+corr_1_3 <- correlations[,c(1,3)]
+corr_2_3 <- correlations[,c(2,3)]
 ```
 
+
 ```{r}
+png(filename="imgs/cercle_plan_1_2.png")
 plot(corr_1_2, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1), asp=1)
 text(correlations[,1], correlations[,2], labels=rownames(correlations), pos=2)
 require(plotrix)
@@ -82,11 +88,27 @@ plot(ACP_res[,c(1,3)], type='n', asp=1) # Plan 1,3
 text(ACP_res[,1], ACP_res[,3], labels=recettes_pays$origin)
 ```
 
+```{r}
+png(filename="imgs/cercle_plan_1_3.png")
+plot(corr_1_3, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1), asp=1)
+text(correlations[,1], correlations[,3], labels=rownames(correlations), pos=2)
+require(plotrix)
+draw.circle(0, 0, 1, nv = 1000)
+```
+
 Plan 2,3:
 ```{r}
 png(filename="imgs/acp_plan_2_3.png")
 plot(ACP_res[,c(2,3)], type='n', asp=1) # Plan 2,3
 text(ACP_res[,2], ACP_res[,3], labels=recettes_pays$origin)
+```
+
+```{r}
+png(filename="imgs/cercle_plan_2_3.png")
+plot(corr_2_3, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1), asp=1)
+text(correlations[,2], correlations[,3], labels=rownames(correlations), pos=2)
+require(plotrix)
+draw.circle(0, 0, 1, nv = 1000)
 ```
 
 Question 3:
@@ -99,11 +121,32 @@ plot(clust, labels = recettes_pays$origin, xlab = "", ylab = "", main = "Dendrog
 ```
 
 Question 4:
+recherche d'un bon K
 ```{r}
-dist_manhattan_recettes = dist(recettes_pays_quant, method="manhattan")
-clust = hclust(dist_manhattan_recettes, method="ward.D2")
-print(clust)
-png(filename="imgs/CAH_dendrogramme.png")
-plot(clust, labels = recettes_pays$origin, xlab = "", ylab = "", main = "Dendrogramme de la classification ascendante hiérarchique")
+min = vector(length = 10)
+for (K in 1:10){
+  clust = kmeans(recettes_pays_quant, K)
+  #print("K:")
+  #print(K)
+  temp = clust$tot.withinss
+  for (N in 2:100){
+    clust = kmeans(recettes_pays_quant, K)
+    #print(clust$tot.withinss)
+    if (clust$tot.withinss<temp){
+      temp = clust$tot.withinss
+    }
+  }
+  min[K]=temp
+}
+print(min)
+png(filename="imgs/K_means_choix_K.png")
+plot(min, ylab="Inertie intraclasse", xlab = "K", main = "Inertie intraclasse en fonction du nombre de classes choisi")
+```
+```{r}
+K=3
+print(min)
+clust = kmeans(recettes_pays_quant, K)
+#png(filename="imgs/K_means_choix_K.png")
+plot(clust, main = "K means")
 ```
 
