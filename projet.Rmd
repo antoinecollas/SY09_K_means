@@ -159,7 +159,7 @@ print(clusters)
 Question 6:
 ```{r}
 recettes_echant <- read.csv("donnees/recettes-echant.data", header=T, sep=",")
-#print(recettes_echant)
+print(recettes_echant)
 ```
 
 ```{r}
@@ -193,5 +193,32 @@ print(ing_origin)
 dist_ing_origin = dist(ing_origin)
 clust = hclust(dist_ing_origin, method="ward.D2")
 png(filename="imgs/CAH_dendrogramme_ingredients.png", res=100, height=1000, width=1000)
+plot(clust)
+```
+
+Deuxième essai de la question 7:
+```{r}
+ing_origin <- data.frame(t(recettes_echant[,-1]))
+ing_origin <- ing_origin[order(row.names(ing_origin)),] 
+print(ing_origin)
+```
+
+euclidian est sans doute un mauvais choix car si on a deux vecteurs:
+0 0 0 0 0 1 0
+0 0 1 0 0 0 0
+la distance est sqrt(2) ce qui semble faible alors que les deux ingrédients n'ont jamais été utilisés ensemble. La distance euclidienne dépend de la fréquence d'utilisation de deux ingrédients. Deux ingrédients peu utilisés sont proches au sens euclidien car ils sont peu utilisés alors que ce qu'on cherche est à savoir s'ils sont utilisés conjointement.
+```{r}
+dist_ing_origin = dist(ing_origin, method = "euclidian")
+clust = hclust(dist_ing_origin, method="ward.D2")
+png(filename="imgs/CAH_dendrogramme_ingredients_euclidian.png", res=100, height=1000, width=1000)
+plot(clust)
+```
+
+Distance de Jaccard ne prend en compte que quand il y a au moins un 1 dans l'une des deux valeur de chaque couple.
+https://fr.wikipedia.org/wiki/Indice_et_distance_de_Jaccard
+```{r}
+dist_ing_origin = dist(ing_origin, method = "binary")
+clust = hclust(dist_ing_origin, method="ward.D2")
+png(filename="imgs/CAH_dendrogramme_ingredients_binary.png", res=100, height=1000, width=1000)
 plot(clust)
 ```
