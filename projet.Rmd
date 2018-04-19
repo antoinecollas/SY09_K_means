@@ -56,7 +56,7 @@ plot(ACP_res[,c(1,2)], type='n', asp=1) # Plan 1,2
 text(ACP_res[,1], ACP_res[,2], labels=recettes_pays$origin)
 ```
 
-Cercle des corrélations pour le plan 1,2: est-il bon?? comment le rendre lisible??
+Cercle des corrélations pour le plan 1,2:
 ```{r}
 n=dim(recettes_pays_quant)[1]
 matrix_recettes_pays_quant <- as.matrix(recettes_pays_quant)
@@ -175,6 +175,7 @@ boxplot(recettes_echant_quant)
 ```
 
 Question 7:
+Pas sur que ce soit bon...
 ```{r}
 aggr <- by(recettes_echant_quant, INDICES=recettes_echant$origin, FUN=colSums)
 ing_origin <- as.data.frame(do.call(cbind,aggr))
@@ -182,10 +183,15 @@ ing_origin <- ing_origin[order(row.names(ing_origin)),]
 #verification
 #print(sum(ing_origin[1,]))
 #print(sum(recettes_echant_quant$basil))
-#print(ing_origin)
-nb_recettes_origine = summary(recettes_echant$origin)
-print(nb_recettes_origine)
-ing_origin = ing_origin / nb_recettes_origine
+nb_recettes_origine = data.frame(t(summary(recettes_echant$origin)))
+nb_recettes_origine <- do.call("rbind", replicate(dim(ing_origin)[1], nb_recettes_origine, simplify = FALSE))
+ing_origin <- ing_origin / nb_recettes_origine
+print(ing_origin)
+```
 
-#print(ing_origin)
+```{r}
+dist_ing_origin = dist(ing_origin)
+clust = hclust(dist_ing_origin, method="ward.D2")
+png(filename="imgs/CAH_dendrogramme_ingredients.png", res=100, height=1000, width=1000)
+plot(clust)
 ```
