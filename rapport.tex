@@ -14,6 +14,8 @@
     \usepackage{float}
     \usepackage{hyperref}
     \usepackage{advdate}
+    \usepackage{caption}
+    \usepackage{subcaption}
     
     \floatplacement{figure}{H}
     
@@ -81,7 +83,7 @@
     \subsection*{Question 1}
     Le jeu de données présent dans le fichier recettes-pays.data contient 51 variables pour 26 individus.
     Nous pouvons donc noter que nous disposons de plus de variables que d'individus.
-    Parmis ces 51 variables, une seule est qualitative (les origines des recettes) et 50 sont quantitaves.
+    Parmi ces 51 variables, une seule est qualitative (les origines des recettes) et 50 sont quantitaves.
     Ces dernières prennent leurs valeurs entre $0$ et $1$ ($0$ et $0.82$ pour être plus précis).
     Dans ce jeux de données les recettes ont été agrégées par origine, il y a donc 26 origines (une par ligne de notre tableau individus-variables).
     De plus, le jeux de données ne présente aucunes valeurs manquantes.
@@ -90,8 +92,10 @@
     Nous réalisons une ACP sur le jeu de données. Nous obtenons 26 axes principaux: autant que d'individus.
     En effet, comme il y a moins d'individus que de variables, il est suffisant de prendre 26 axes pour représenter tous les individus.
 
-    Nous les pourcentages d'inerties expliquée visibles sur la figure \ref{fig_acp}. 
+    Nous obtenons les pourcentages d'inertie expliquée visibles sur la figure \ref{fig_acp}. 
     Les 3 premiers axes représentent $72\%$ de la variance du nuage de points.
+
+
     \begin{figure}
         \centering
         \includegraphics[width=0.5\textwidth]{imgs/acp.png}
@@ -100,23 +104,82 @@
     \end{figure}
 
     Comme les 3 premiers axes factoriels représentent $72\%$ de la variance totale, nous analysons le nuage de points seulement avec les 3 premiers plans factoriels.
-    Nous obtenons les plans factoriels suivant:
+    Nous obtenons les plans factoriels des figures \ref{fig_acp_plan_1_2}, \ref{fig_acp_plan_1_3} et \ref{fig_acp_plan_2_3}. Nous avons associé à chaque plan son cercle des corrélations.
+    
     \begin{figure}
         \centering
-        \includegraphics[width=0.5\textwidth]{imgs/acp_plan_1_2.png}
-        \caption{Plan 1,2}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/acp_plan_1_2.png}
+          \caption{Plan 1,2}
+          \label{fig:sub1}
+        \end{subfigure}%
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/cercle_plan_1_2.png}
+          \caption{Cercle des corrélations}
+          \label{fig:sub2}
+        \end{subfigure}
+        \caption{Plan factoriel 1,2 avec son cercle associé}
         \label{fig_acp_plan_1_2}
     \end{figure}
+
     \begin{figure}
         \centering
-        \includegraphics[width=0.5\textwidth]{imgs/acp_plan_1_3.png}
-        \caption{Plan 1,3}
-        \label{fig_acp_plan_1_3}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/acp_plan_1_3.png}
+          \caption{Plan 1,3}
+          \label{fig:sub1}
+        \end{subfigure}%
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/cercle_plan_1_3.png}
+          \caption{Cercle des corrélations}
+          \label{fig:sub2}
+        \end{subfigure}
+        \caption{Plan factoriel 1,3 avec son cercle associé}
+        \label{fig_acp_plan_1_2}
     \end{figure}
+
+
     \begin{figure}
         \centering
-        \includegraphics[width=0.5\textwidth]{imgs/acp_plan_2_3.png}
-        \caption{Plan 2,3}
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/acp_plan_2_3.png}
+          \caption{Plan 2,3}
+          \label{fig:sub1}
+        \end{subfigure}%
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/cercle_plan_2_3.png}
+          \caption{Cercle des corrélations}
+          \label{fig:sub2}
+        \end{subfigure}
+        \caption{Plan factoriel 2,3 avec son cercle associé}
         \label{fig_acp_plan_2_3}
     \end{figure}
+
+    Dans le premier plan factoriel, nous observons que plusieurs groupes se forment.
+    Les pays asiatiques se distinguent avec des ingrédients comme l'huile de sésame, l'huile de soja, le poisson, les échalottes...
+    Un deuxième groupe se distingue: la cuisine occidentale avec des ingrédients comme le blé, les oeufs et le lait.
+    Aussi, les pays consommant de la tomate et de l'huile d'olive sont exposés dans ce premier plan: Maroc, Mexique et Afrique.
+
+    Dans le deuxième plan factoriel, la Grèce et la méditerranée sont liés par leur consommation de féta, d'huile d'olive et de jus de citron. 
+    Ce plan permet aussi de voir la formation de deux sous groupes parmi les pays asiatiques. Le Vietnam et la Thaïlande consomment du poulet et du piment, ce qui est moins le cas de la Chine et du Japon.
+
+    \subsection*{Question 3}
+    Nous obtenons le dendrogramme de la figure \ref{fig_CAH_dendrogramme}.
+    Nous observons que trois groupes émergent: ...
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{imgs/CAH_dendrogramme.png}
+        \caption{Dendrogramme de la classification ascendante hiérarchique}
+        \label{fig_CAH_dendrogramme}
+    \end{figure}
+
+
+
     \end{document}
+

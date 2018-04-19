@@ -91,7 +91,19 @@ text(ACP_res[,2], ACP_res[,3], labels=recettes_pays$origin)
 
 Question 3:
 ```{r}
-#png(filename="imgs/acp_plan_2_3.png")
-clust = hclust(dist(recettes_pays_quant), method="ward.D2")
-plot(clust)
+dist_manhattan_recettes = dist(recettes_pays_quant, method="manhattan")
+clust = hclust(dist_manhattan_recettes, method="ward.D2")
+print(clust)
+png(filename="imgs/CAH_dendrogramme.png")
+plot(clust, labels = recettes_pays$origin, xlab = "", ylab = "", main = "Dendrogramme de la classification ascendante hiérarchique")
 ```
+
+Question 4:
+```{r}
+dist_manhattan_recettes = dist(recettes_pays_quant, method="manhattan")
+clust = hclust(dist_manhattan_recettes, method="ward.D2")
+print(clust)
+png(filename="imgs/CAH_dendrogramme.png")
+plot(clust, labels = recettes_pays$origin, xlab = "", ylab = "", main = "Dendrogramme de la classification ascendante hiérarchique")
+```
+
