@@ -87,7 +87,10 @@
     Ces dernières prennent leurs valeurs entre $0$ et $1$ ($0$ et $0.82$ pour être plus précis).
     Dans ce jeux de données les recettes ont été agrégées par origine, il y a donc 26 origines (une par ligne de notre tableau individus-variables).
     De plus, le jeux de données ne présente aucunes valeurs manquantes.
-    
+    Cependant certaines origines sont à remarquer.
+    En effet, il y a par exemple une distinction entre l'Afrique et le Maroc ou encore entre l'Asie et Chine, Japon, Vietnam, Thailande.
+    De plus, les origines semblent être regroupées par région géographique mais des origines comme \"juive\",\"cadiens\", sont présentes.
+
     \subsection*{Question 2}
     Nous réalisons une ACP sur le jeu de données. Nous obtenons 26 axes principaux: autant que d'individus.
     En effet, comme il y a moins d'individus que de variables, il est suffisant de prendre 26 axes pour représenter tous les individus.
@@ -166,18 +169,42 @@
     Un deuxième groupe se distingue: la cuisine occidentale avec des ingrédients comme le blé, les oeufs et le lait.
     Aussi, les pays consommant de la tomate et de l'huile d'olive sont exposés dans ce premier plan: Maroc, Mexique et Afrique.
 
-    Dans le deuxième plan factoriel, la Grèce et la méditerranée sont liés par leur consommation de féta, d'huile d'olive et de jus de citron. 
-    Ce plan permet aussi de voir la formation de deux sous groupes parmi les pays asiatiques. Le Vietnam et la Thaïlande consomment du poulet et du piment, ce qui est moins le cas de la Chine et du Japon.
+    Dans le deuxième plan factoriel, la Grèce et la méditerranée sont liées par leur consommation de féta, d'huile d'olive et de jus de citron. 
+    Ce plan permet aussi de voir la formation de deux sous groupes parmi les pays asiatiques.
+    Le Vietnam et la Thaïlande consomment du poulet et du piment, ce qui est moins le cas de la Chine et du Japon.
+
+    Enfin le troisième plan factoriel met en évidence des pays consommant du maïs comme le Mexique.
 
     \subsection*{Question 3}
     Nous obtenons le dendrogramme de la figure \ref{fig_CAH_dendrogramme}.
-    Nous observons que trois groupes émergent: ...
+    
     \begin{figure}
         \centering
         \includegraphics[width=0.5\textwidth]{imgs/CAH_dendrogramme.png}
         \caption{Dendrogramme de la classification ascendante hiérarchique}
         \label{fig_CAH_dendrogramme}
     \end{figure}
+
+    Ce dendrogramme confirme plusieurs observations que nous avions déjà indiquées dans la deuxième question:
+    \begin{itemize}
+        \item les cuisines des pays asiatiques sont ensemble avec deux sous groupes: Japon-Chine, Thailande-Vietnam.
+        \item les recettes de deux pays occidentaux, les Etats-Unis et la France, sont ensemble
+        \item la cuisine méditerranée est regroupée avec les pays suivants: Grèce, Italie, Espagne, Portugal.
+    \end{itemize}
+
+    D'autres groupes que nous n'avions pas identifiés sont présents:
+    \begin{itemize}
+        \item les recettes des pays de l'europe de l'est avec l'Allemagne, la Russie et les pays de l'est.
+        \item la cuisine des régions dans la partie inférieure au Texas: les Cadiens (présents au Texas et en Louisiane), Mexique, Amérique centrale, Amérique du sud.
+        \item la cuisine d'Afrique et du Moyen-Orient (Afrique, Moyen-Orient et Maroc).
+    \end{itemize}
+    
+    A un niveau plus macro nous avons 3 groupes:
+    \begin{itemize}
+        \item l'asie avec un indice de 7.5
+        \item l'occident avec l'europe de l'est: un indice de 4 ce qui traduit une utilisation relativement homogène des ingrédients
+        \item Amérique centrale et du sud, méditerranée, l'Inde, l'Afrique, avec un indice de 8 qui traduit une certaine hétérogénéité par rapport à l'occident par exemple
+    \end{itemize}
 
 
 
