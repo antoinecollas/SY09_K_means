@@ -10,6 +10,8 @@ Question 1:
 recettes_pays <- read.csv("donnees/recettes-pays.data", header=T, sep=",")
 head(recettes_pays)
 recettes_pays_quant = recettes_pays[,-1]
+#sum(recettes_pays_quant[1,])
+#sum(recettes_pays_quant[,1])
 ```
 
 ```{r}
@@ -144,9 +146,46 @@ plot(min, ylab="Inertie intraclasse", xlab = "K", main = "Inertie intraclasse en
 ```
 ```{r}
 K=3
-print(min)
-clust = kmeans(recettes_pays_quant, K)
+clust <- kmeans(recettes_pays_quant, K)
 #png(filename="imgs/K_means_choix_K.png")
-plot(clust, main = "K means")
+clusters <- data.frame(recettes_pays$origin, clust$cluster)
+clusters <- clusters[order(clusters[,2]),] 
+print(clusters)
+#print(recettes_pays$origin)
+#print(clust$cluster)
+#plot(clust, main = "K means")
 ```
 
+Question 6:
+```{r}
+recettes_echant <- read.csv("donnees/recettes-echant.data", header=T, sep=",")
+#print(recettes_echant)
+```
+
+```{r}
+print(nrow(recettes_echant))
+print(length(unique(recettes_echant[,1])))
+print(ncol(recettes_echant))
+recettes_echant_quant <- recettes_echant[,-1]
+print(min(recettes_echant_quant))
+print(max(recettes_echant_quant))
+print(sum(is.na(recettes_echant_quant)))
+boxplot(recettes_echant_quant)
+#summary(recettes_pays)
+```
+
+Question 7:
+```{r}
+aggr <- by(recettes_echant_quant, INDICES=recettes_echant$origin, FUN=colSums)
+ing_origin <- as.data.frame(do.call(cbind,aggr))
+ing_origin <- ing_origin[order(row.names(ing_origin)),] 
+#verification
+#print(sum(ing_origin[1,]))
+#print(sum(recettes_echant_quant$basil))
+#print(ing_origin)
+nb_recettes_origine = summary(recettes_echant$origin)
+print(nb_recettes_origine)
+ing_origin = ing_origin / nb_recettes_origine
+
+#print(ing_origin)
+```
