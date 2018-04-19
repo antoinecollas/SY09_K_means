@@ -87,6 +87,36 @@
     De plus, le jeux de données ne présente aucunes valeurs manquantes.
     
     \subsection*{Question 2}
+    Nous réalisons une ACP sur le jeu de données. Nous obtenons 26 axes principaux: autant que d'individus.
+    En effet, comme il y a moins d'individus que de variables, il est suffisant de prendre 26 axes pour représenter tous les individus.
 
+    Nous les pourcentages d'inerties expliquée visibles sur la figure \ref{fig_acp}. 
+    Les 3 premiers axes représentent $72\%$ de la variance du nuage de points.
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{imgs/acp.png}
+        \caption{Pourcentages d'inertie expliquée}
+        \label{fig_acp}
+    \end{figure}
 
+    Comme les 3 premiers axes factoriels représentent $72\%$ de la variance totale, nous analysons le nuage de points seulement avec les 3 premiers plans factoriels.
+    Nous obtenons les plans factoriels suivant:
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{imgs/acp_plan_1_2.png}
+        \caption{Plan 1,2}
+        \label{fig_acp_plan_1_2}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{imgs/acp_plan_1_3.png}
+        \caption{Plan 1,3}
+        \label{fig_acp_plan_1_3}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{imgs/acp_plan_2_3.png}
+        \caption{Plan 2,3}
+        \label{fig_acp_plan_2_3}
+    \end{figure}
     \end{document}

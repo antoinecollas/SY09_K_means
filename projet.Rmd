@@ -36,18 +36,62 @@ Question 2:
 res <- prcomp(recettes_pays_quant)
 summary_ACP = summary(res)
 print(summary_ACP)
-barplot(summary_ACP$importance[2,])
+png(filename="imgs/acp.png")
+barplot(summary_ACP$importance[2,], las=2)
 title(main='Pourcentages d\'inertie expliquée par chaque axe de l\'ACP \n par ordre décroissant.', ylab='pourcentage d\'inertie expliquée')
 #(res$sdev)^2 # Les valeurs propres
 #res$loadings # Les vecteurs propres
 #res$scores # Le nouveau tableau individus-variables
 ```
 
+Plan 1,2:
+```{r}
+#ACP_res = data.frame(recettes_pays$origin, res$x, row.names = rownames(recettes_pays))
+ACP_res = data.frame(res$x, row.names = rownames(recettes_pays_quant))
 
+png(filename="imgs/acp_plan_1_2.png")
+plot(ACP_res[,c(1,2)], type='n', asp=1) # Plan 1,2
+text(ACP_res[,1], ACP_res[,2], labels=recettes_pays$origin)
+```
 
+Cercle des corrélations pour le plan 1,2: est-il bon?? comment le rendre lisible??
+```{r}
+n=dim(recettes_pays_quant)[1]
+matrix_recettes_pays_quant <- as.matrix(recettes_pays_quant)
+V <- (1/n)*t(matrix_recettes_pays_quant) %*% matrix_recettes_pays_quant
+tmp <- eigen(V, symmetric=TRUE)
+L <- diag(tmp$values)[c(1:n),c(1:n)] #on retire les valeurs propres nulles
+correlations <- (1/n) * (t(matrix_recettes_pays_quant)%*%as.matrix(ACP_res)) / (sqrt(diag(V))%*%t(sqrt(diag(L))))
+print(dim(correlations))
+print(correlations)
+print(t(correlations[1,])%*%correlations[1,])
+corr_1_2 <- correlations[,c(1,2)]
+```
 
+```{r}
+plot(corr_1_2, xlim=c(-1.1,1.1), ylim=c(-1.1,1.1), asp=1)
+text(correlations[,1], correlations[,2], labels=rownames(correlations), pos=2)
+require(plotrix)
+draw.circle(0, 0, 1, nv = 1000)
+```
 
+Plan 1,3:
+```{r}
+png(filename="imgs/acp_plan_1_3.png")
+plot(ACP_res[,c(1,3)], type='n', asp=1) # Plan 1,3
+text(ACP_res[,1], ACP_res[,3], labels=recettes_pays$origin)
+```
 
+Plan 2,3:
+```{r}
+png(filename="imgs/acp_plan_2_3.png")
+plot(ACP_res[,c(2,3)], type='n', asp=1) # Plan 2,3
+text(ACP_res[,2], ACP_res[,3], labels=recettes_pays$origin)
+```
 
-
-
+Question 3:
+```{r}
+#png(filename="imgs/acp_plan_2_3.png")
+clust = hclust(dist(recettes_pays_quant), method="ward.D2")
+plot(clust)
+```
