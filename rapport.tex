@@ -245,6 +245,55 @@
     Il n'y a aucune valeur manquante.
     
     \subsection*{Question 7}
+
+    Nous transformons les données en tableau individu-variable: les individus sont les ingrédients et les variables sont les recettes.
+   
+    Pour calculer la matrice de similarité/dissimilarité nous n'utilisons pas les distances euclidienne et manhattan.
+    En effet, si nous prenons deux individus:\\
+    0 0 0 0 0 1 0\\
+    0 0 1 0 0 0 0\\
+    la distance euclidienne est $\sqrt{2}$ ce qui semble faible alors que les deux ingrédients n'ont jamais été utilisés ensemble. 
+    La distance euclidienne dépend de la fréquence d'utilisation de deux ingrédients. 
+    Deux ingrédients peu utilisés sont proches au sens euclidien car ils sont peu utilisés.
+    La distance euclidienne ne mesure pas tellement le degré d'utilisation conjointe.
+
+    Une meilleure mesure de dissimilarité consiste à ne compter seulement les couples (un couple par variable) où il y a au moins un 1.
     
+    Nous notons:
+    \begin{itemize}
+        \item $M_{01}$ le nombre de couples (0,1)
+        \item $M_{10}$ le nombre de couples (1,0)
+        \item $M_{11}$ le nombre de couples (1,1)
+    \end{itemize}
+
+    Une mesure de dissimilarité est:
+
+    \begin{equation}
+        \nonumber
+        d = \frac{M_{01}+M_{10}}{M_{01}+M_{10}+M_{11}}
+    \end{equation}
+
+    Cette mesure est comprise entre 0 et 1. \\
+    0 pour deux ingrédients qui sont systématiquement utilisés conjointement.
+    1 pour deux ingrédients qui ne sont jamais utilisés conjointement.
+
+    Cette mesure est implémentée dans R avec la fonction "dist" et l'argument method="binary" et est appelée distance de Jaccard. 
+    
+    \subsection*{Question 8}
+    En utilisant la distance de Jaccard et le critère de Ward nous obtenons la classification hiérarchique ascendante suivante:
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{imgs/CAH_dendrogramme_ingredients_binary.png}
+        \caption{Dendrogramme obtenue avec la distance de Jaccard et le critère de Ward}
+        \label{fig_K_means_choix_K}
+    \end{figure}
+
+    Trois classes d'ingrédients se distinguent:
+    \begin{itemize}
+        \item les ingrédients pour les desserts
+        \item les ingédients pour le plat principal
+        \item les ingrédients qui viennent s'ajouter au reste comme le vin, la moutarde, le poivre...
+    \end{itemize}
+
     \end{document}
 
