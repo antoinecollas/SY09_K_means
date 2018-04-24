@@ -236,7 +236,10 @@ plot(X, col=z)
 Données d'entrée de l'algorithme
 
 ```{r}
+source(file = "fonctions/distXY.r")
+
 K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1, epsilon=10**(-5)) {
+  X = as.matrix(X)
   if (K > nrow(X)){
     print("Erreur: le nombre de classes doit être inférieur ou égale au nombre d'individus.")
     return()
@@ -253,23 +256,39 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1
     
     range_1_nb_indiv = 1:n
     sample_1_nb_indiv <- sample(range_1_nb_indiv, size=K)
-    mu <- t(X[sample_1_nb_indiv,]) #mu = (mu_1, mu_2, ..., mu_K)
+    mu <- as.matrix(X[sample_1_nb_indiv,]) #les mu_1, mu_2, ..., mu_K sont en ligne pour avoir un tableau individus-variables
 
-    V <- array(1,c(p,p,K))
+    V_tilde <- array(0,c(p,p,K))
     for(k in 1:K){
-      V[,,k] = (rho[k]**(-1/p)) * V[,,k]
+      V_tilde[,,k] = diag(p)
+      V_tilde[,,k] = (rho[k]**(-1/p)) * V_tilde[,,k]
     }
     
     i = 0
     delta = epsilon + 1 #pour faire au moins une itération de l'algorithme
     while((delta>epsilon) && (i<n_iter)){
+      #nouvelle partition
+      #pour chaque point on calcule la distance avec les K centres: matrice n,K
+      for (k in 1:K) {
+        distances_au_centre_mu_k = distXY(X, mu[k,], V_tilde[,,k])
+        if (exists("distances_aux_centres")){
+          distances_aux_centres = cbind(distances_aux_centres, distances_au_centre_mu_k)
+        }else{
+          distances_aux_centres = distances_au_centre_mu_k
+        }
+      }
+      #puis on prend la distance la plus faible (sur chaque ligne de la matrice)
+      partition = apply(distances_aux_centres, MARGIN=1, FUN = which.min)
+
+      
+      #actualisation des paramètres
       mu_old = mu
       #mu=...
       
       #actualisation des critères de convergence
       delta = 0
       for (k in 1:K) {
-        delta = delta + dist(rbind(mu[,k], mu_old[,k]), method = 'euclidian')**2
+        delta = delta + dist(rbind(mu[k,], mu_old[k,]), method = 'euclidian')**2
       }
       i=i+1
 
@@ -282,7 +301,7 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1
 ```
 
 ```{r}
-res <- K_means_distance_adaptative(X, rho=c(1:3), K=3)
+res <- K_means_distance_adaptative(X, K=3)
 ```
 
 
