@@ -253,13 +253,28 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1
     
     range_1_nb_indiv = 1:n
     sample_1_nb_indiv <- sample(range_1_nb_indiv, size=K)
-    mu <- X[sample_1_nb_indiv,]
-    
+    mu <- t(X[sample_1_nb_indiv,]) #mu = (mu_1, mu_2, ..., mu_K)
+
     V <- array(1,c(p,p,K))
     for(k in 1:K){
       V[,,k] = (rho[k]**(-1/p)) * V[,,k]
     }
-    print(V)
+    
+    i = 0
+    delta = epsilon + 1 #pour faire au moins une itération de l'algorithme
+    while((delta>epsilon) && (i<n_iter)){
+      mu_old = mu
+      #mu=...
+      
+      #actualisation des critères de convergence
+      delta = 0
+      for (k in 1:K) {
+        delta = delta + dist(rbind(mu[,k], mu_old[,k]), method = 'euclidian')**2
+      }
+      i=i+1
+
+      print(delta)
+    }
       
   }  
   return()
