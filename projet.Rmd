@@ -289,6 +289,8 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1
         print(n_k)
         mu[k,] <- colSums(X[mask,])
       }
+      
+      
 
       #actualisation des critères de convergence
       delta = 0
