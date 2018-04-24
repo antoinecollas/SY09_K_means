@@ -222,3 +222,53 @@ clust = hclust(dist_ing_origin, method="ward.D2")
 png(filename="imgs/CAH_dendrogramme_ingredients_binary.png", res=100, height=1000, width=1000)
 plot(clust)
 ```
+
+
+Algorithme des k-means avec distance adaptative
+```{r}
+X <- read.csv("donnees/Synth1.csv", header=T, row.names=1)
+z <- X[,3]
+X <- X[,-3]
+print(X)
+plot(X, col=z)
+```
+
+Données d'entrée de l'algorithme
+
+```{r}
+K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1, epsilon=10**(-5)) {
+  if (K > nrow(X)){
+    print("Erreur: le nombre de classes doit être inférieur ou égale au nombre d'individus.")
+    return()
+  }
+  if (length(rho) != K){
+    print("Erreur: la longueur du vecteur rho est différente de K.")
+    return()
+  }
+    
+  for (i in 1:n_ess) {
+    #initialisaltion
+    n <- nrow(X)
+    p <- ncol(X)
+    
+    range_1_nb_indiv = 1:n
+    sample_1_nb_indiv <- sample(range_1_nb_indiv, size=K)
+    mu <- X[sample_1_nb_indiv,]
+    
+    V <- array(1,c(p,p,K))
+    for(k in 1:K){
+      V[,,k] = (rho[k]**(-1/p)) * V[,,k]
+    }
+    print(V)
+      
+  }  
+  return()
+}
+```
+
+```{r}
+res <- K_means_distance_adaptative(X, rho=c(1:3), K=3)
+```
+
+
+
