@@ -225,15 +225,6 @@ plot(clust)
 
 
 Algorithme des k-means avec distance adaptative
-```{r}
-X <- read.csv("donnees/Synth1.csv", header=T, row.names=1)
-z <- X[,3]
-X <- X[,-3]
-print(X)
-plot(X, col=z)
-```
-
-Données d'entrée de l'algorithme
 
 ```{r}
 source(file = "fonctions/distXY.r")
@@ -366,13 +357,64 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter_max=100, n_e
 }
 ```
 
+Données synthétiques
+
 ```{r}
-res <- K_means_distance_adaptative(X, K=2, n_iter_max = 100, n_ess = 10)
-print(res)
-plot(X, col=z, pch=res$partition)
+library(mclust)
 ```
 
+```{r}
+X <- read.csv("donnees/Synth1.csv", header=T, row.names=1)
+z <- X[,3]
+X <- X[,-3]
 
+K=2
+clust = kmeans(X, K)
+clust_adapt <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+plot(X, col=z, pch=clust$cluster)
+plot(X, col=z, pch=clust_adapt$partition)
+print(adjustedRandIndex(z, clust$cluster))
+print(adjustedRandIndex(z, clust_adapt$partition))
+```
+```{r}
+X <- read.csv("donnees/Synth2.csv", header=T, row.names=1)
+z <- X[,3]
+X <- X[,-3]
 
+K=2
+clust = kmeans(X, K)
+clust_adapt <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+plot(X, col=z, pch=clust$cluster)
+plot(X, col=z, pch=clust_adapt$partition)
+print(adjustedRandIndex(z, clust$cluster))
+print(adjustedRandIndex(z, clust_adapt$partition))
+```
 
+```{r}
+X <- read.csv("donnees/Synth3.csv", header=T, row.names=1)
+z <- X[,3]
+X <- X[,-3]
 
+K=2
+clust = kmeans(X, K)
+clust_adapt <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+plot(X, col=z, pch=clust$cluster)
+plot(X, col=z, pch=clust_adapt$partition)
+print(adjustedRandIndex(z, clust$cluster))
+print(adjustedRandIndex(z, clust_adapt$partition))
+```
+Données réelles
+Iris
+```{r}
+data(iris)
+X <- iris[,1:4]
+z <- iris[,5]
+
+K=3
+clust = kmeans(X, K)
+clust_adapt <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+plot(X, col=z, pch=clust$cluster)
+plot(X, col=z, pch=clust_adapt$partition)
+print(adjustedRandIndex(z, clust$cluster))
+print(adjustedRandIndex(z, clust_adapt$partition))
+```
