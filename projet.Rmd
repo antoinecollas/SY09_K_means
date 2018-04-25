@@ -238,7 +238,7 @@ Données d'entrée de l'algorithme
 ```{r}
 source(file = "fonctions/distXY.r")
 
-K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1, epsilon=10**(-5)) {
+K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter_max=100, n_ess=1, epsilon=10**(-5)) {
   X = as.matrix(X)
   if (K > nrow(X)){
     print("Erreur: le nombre de classes doit être inférieur ou égale au nombre d'individus.")
@@ -264,9 +264,9 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1
       V_tilde[,,k] = (rho[k]**(-1/p)) * V_tilde[,,k]
     }
     
-    i = 0
     delta = epsilon + 1 #pour faire au moins une itération de l'algorithme
-    while((delta>epsilon) && (i<n_iter)){
+    n_iter = 0
+    while((delta>epsilon) && (i<n_iter_max)){
       #nouvelle partition
       #pour chaque point on calcule la distance avec les K centres: matrice n,K
       for (k in 1:K) {
@@ -309,13 +309,37 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1
       for (k in 1:K) {
         delta = delta + dist(rbind(mu[k,], mu_old[k,]), method = 'euclidian')**2
       }
-      i=i+1
-
-      print(delta)
+      n_iter=n_iter+1
+      #print(delta)
     }
+    j_star <- 0
+    for (k in 1:K){
+      mask <- partition==k
+      temp <- apply(X[mask,], 1, function(x) distXY(X = t(x), Y = mu[k,], M = solve(V_tilde[,,k])))
+      j_star <- j_star + sum(temp)
+    }
+    print(j_star)
+
+    if ((i==1) || (j_star < min_J_star)){
+      min_J_star <- j_star
+      res_n_iter <- n_iter
+
+      #calcul de cette nouvelle meilleure partition
+      for (k in 1:K) {
+        distances_au_centre_mu_k = distXY(X, mu[k,], V_tilde[,,k])
+        if (exists("distances_aux_centres")){
+          distances_aux_centres = cbind(distances_aux_centres, distances_au_centre_mu_k)
+        }else{
+          distances_aux_centres = distances_au_centre_mu_k
+        }
+      }
+      res_partition = apply(distances_aux_centres, MARGIN=1, FUN = which.min)
       
-  }  
-  return()
+      res_mu = mu
+      res_V_tilde = V_tilde
+    }
+  }
+  return(c(min_J_star, res_n_iter, res_partition, res_mu, res_V_tilde))
 }
 ```
 
