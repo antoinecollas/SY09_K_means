@@ -250,7 +250,9 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter_max=100, n_e
     
     range_1_nb_indiv = 1:n
     sample_1_nb_indiv <- sample(range_1_nb_indiv, size=K)
-    mu <- as.matrix(X[sample_1_nb_indiv,]) #les mu_1, mu_2, ..., mu_K sont en ligne pour avoir un tableau individus-variables
+    mu <- matrix(X[sample_1_nb_indiv,], nrow=K) #les mu_1, mu_2, ..., mu_K sont en ligne pour avoir un tableau individus-variables
+    #print("mu")
+    #print(mu)
     rownames(mu) <- c()
     
     V_tilde <- array(0,c(p,p,K))
@@ -273,6 +275,12 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter_max=100, n_e
         #print("det(V_tilde)")
         #print(det(V_tilde[,,k]))
         #print(eigen(V_tilde[,,k])$values)
+        #print("Y")
+        #print(mu[k,])
+        #print("M")
+        #print(solve(V_tilde[,,k], tol=1e-20))
+        #print("V_tilde[,,k]")
+        #print(V_tilde[,,k])
         distances_au_centre_mu_k = distXY(X, mu[k,], solve(V_tilde[,,k], tol=1e-20)) 
         if (k>1){
           distances_aux_centres = cbind(distances_aux_centres, distances_au_centre_mu_k)
@@ -418,37 +426,70 @@ z <- iris[,5]
 ```
 
 ```{r}
-#K-means avec distance euclidienne
-min = vector(length = 10)
-for (K in 1:5){
-  clust = kmeans(X, K)
-  temp = clust$tot.withinss
-  for (N in 2:100){
-    clust = kmeans(X, K)
-    if (clust$tot.withinss<temp){
-      temp = clust$tot.withinss
-    }
-  }
-  min[K]=temp
-}
-print(min)
+clust_euclidian_inertia <- vector(length = 5)
+
+K=2
+clust_euclidian <- kmeans(X, K, nstart = 10)
+clust_euclidian_inertia[K] <- clust_euclidian$tot.withinss
 #png(filename="imgs/K_means_choix_K.png")
-plot(min, ylab="Inertie intraclasse", xlab = "K", main = "Inertie intraclasse en fonction du nombre de classes choisi.")
+plot(X, col=clust_euclidian$cluster, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n euclidienne, K=2). Les symboles représentent les vraies classes.")
+
+clust_adaptative_dist <- vector(length = 5)
+clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+clust_adaptative_dist[K] <- clust_adaptative$min_J_star
+#png(filename="imgs/K_means_choix_K.png")
+plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n adaptative, K=2). Les symboles représentent les vraies classes.")
 ```
 ```{r}
-#K-means avec distance adaptative
-min = vector(length = 10)
-for (K in 2:5){
-  #print("K=")
-  #print(K)
-  clust = K_means_distance_adaptative(X, rho=rep(1, K), K=K, n_iter_max = 100, n_ess = 10, epsilon = 1e-3)
-  temp = clust$min_J_star
-  min[K]=temp
-}
-print(min)
+K=3
+clust_euclidian <- kmeans(X, K, nstart = 10)
+clust_euclidian_inertia[K] <- clust_euclidian$tot.withinss
 #png(filename="imgs/K_means_choix_K.png")
-plot(min, ylab="Inertie intraclasse", xlab = "K", main = "Inertie intraclasse en fonction du nombre de classes choisi.")
+plot(X, col=clust_euclidian$cluster, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n euclidienne, K=3). Les symboles représentent les vraies classes.")
+
+clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+clust_adaptative_dist[K] <- clust_adaptative$min_J_star
+#png(filename="imgs/K_means_choix_K.png")
+plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n adaptative, K=3). Les symboles représentent les vraies classes.")
 ```
+
+```{r}
+K=4
+clust_euclidian <- kmeans(X, K, nstart = 10)
+clust_euclidian_inertia[K] <- clust_euclidian$tot.withinss
+#png(filename="imgs/K_means_choix_K.png")
+plot(X, col=clust_euclidian$cluster, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n euclidienne, K=4). Les symboles représentent les vraies classes.")
+
+clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+clust_adaptative_dist[K] <- clust_adaptative$min_J_star
+#png(filename="imgs/K_means_choix_K.png")
+plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n adaptative, K=4). Les symboles représentent les vraies classes.")
+```
+
+```{r}
+K=5
+clust_euclidian <- kmeans(X, K, nstart = 10)
+clust_euclidian_inertia[K] <- clust_euclidian$tot.withinss
+#png(filename="imgs/K_means_choix_K.png")
+plot(X, col=clust_euclidian$cluster, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n euclidienne, K=5). Les symboles représentent les vraies classes.")
+
+clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+clust_adaptative_dist[K] <- clust_adaptative$min_J_star
+#png(filename="imgs/K_means_choix_K.png")
+plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n adaptative, K=5). Les symboles représentent les vraies classes.")
+```
+```{r}
+#K-means avec distance euclidienne
+clust_euclidian_inertia[1] <- kmeans(X, 1, nstart = 10)$tot.withinss
+#png(filename="imgs/K_means_choix_K.png")
+plot(clust_euclidian_inertia, ylab="Inertie intraclasse", xlab = "K", main = "Inertie intraclasse en fonction du nombre de classes choisi.")
+
+#K-means avec distance adaptative
+clust_adaptative_dist[1] <- K_means_distance_adaptative(X, K=1, n_iter_max = 100, n_ess = 10)$min_J_star
+#png(filename="imgs/K_means_choix_K.png")
+plot(clust_adaptative_dist, ylab="Distance", xlab = "K", main = "Distance en fonction du nombre de classes choisi.")
+```
+
 
 ```{r}
 K=3
