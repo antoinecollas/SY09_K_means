@@ -282,17 +282,26 @@ K_means_distance_adaptative <- function(X, K, rho=rep(1, K), n_iter=100, n_ess=1
 
       #actualisation des paramètres
       mu_old = mu
-      
+      #calcul de mu_k
       for(k in 1:K){
         mask <- partition==k
         n_k <- sum(mask)
         mu[k,] <- (1/n_k) * colSums(X[mask,])
       }
-      
+      #calcul de V_tilde_k
       for(k in 1:K){
         mask <- partition==k
         n_k <- sum(mask)
-        mu[k,] <- (1/n_k) * colSums(X[mask,])
+        mu_k_matrix <- matrix(rep(x=mu[k,], each=n_k), nrow=n_k)
+        temp1 <- X[mask,] - mu_k_matrix
+        temp2 <- t(temp1)
+        #print(temp2[,1] %*% t(temp2[,1])) #vérif
+        temp3 <- apply(temp2,2,function(x) x%*%t(x))
+        #print(matrix(temp3[,1], nrow = p, ncol = p)) #vérif
+        temp4 <- matrix(rowSums(temp3), nrow = p)#somme sur les lignes
+        V_k <- (1/n_k) * temp4
+        #print(V_k) #vérif
+        V_tilde[,,k] = ((rho[k]*det(V_k))**(-1/p)) * V_k
       }
 
       #actualisation des critères de convergence
