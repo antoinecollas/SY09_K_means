@@ -363,11 +363,16 @@ X <- X[,-3]
 K=2
 clust = kmeans(X, K)
 clust_adapt <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+png(filename="imgs/K_means_synth_1.png")
 plot(X, col=clust$cluster, pch=z)
+```
+```{r}
+png(filename="imgs/K_means_adapt_synth_1.png")
 plot(X, col=clust_adapt$partition, pch=z)
 print(adjustedRandIndex(z, clust$cluster))
 print(adjustedRandIndex(z, clust_adapt$partition))
 ```
+
 ```{r}
 X <- read.csv("donnees/Synth2.csv", header=T, row.names=1)
 z <- X[,3]
@@ -375,28 +380,60 @@ X <- X[,-3]
 
 K=2
 clust = kmeans(X, K)
-clust_adapt <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+png(filename="imgs/K_means_synth_2.png")
 plot(X, col=clust$cluster, pch=z)
+```
+
+```{r}
+png(filename="imgs/K_means_adapt_synth_2.png")
+clust_adapt <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
 plot(X, col=clust_adapt$partition, pch=z)
 print(adjustedRandIndex(z, clust$cluster))
 print(adjustedRandIndex(z, clust_adapt$partition))
 ```
-
 ```{r}
 X <- read.csv("donnees/Synth3.csv", header=T, row.names=1)
 z <- X[,3]
 X <- X[,-3]
+X_P1 = X[z==1,]
+X_P2 = X[z==2,]
 
+mu_P1 = (1/nrow(X_P1))*colSums(X_P1)
+mu_P2 = (1/nrow(X_P2))*colSums(X_P2)
+
+I_1 = 0
+for (x in X_P1){
+  I_1 = I_1 + (x[1]-mu_P1[1])**2 + (x[2]-mu_P1[2])**2
+}
+print(I_1)
+
+I_2 = 0
+for (x in X_P2){
+  I_2 = I_2 + (x[1]-mu_P2[1])**2 + (x[2]-mu_P2[2])**2
+}
+print(I_2)
+```
+
+```{r}
 K=2
-clust = kmeans(X, K)
-clust_adapt <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+clust <- kmeans(X, K)
+png(filename="imgs/K_means_synth_3.png")
 plot(X, col=clust$cluster, pch=z)
+```
+
+```{r}
+clust_adapt <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+png(filename="imgs/K_means_adapt_synth_3.png")
 plot(X, col=clust_adapt$partition, pch=z)
 print(adjustedRandIndex(z, clust$cluster))
 print(adjustedRandIndex(z, clust_adapt$partition))
 ```
+
+
+
 Données réelles
 Iris
+
 ```{r}
 data(iris)
 X <- iris[,1:4]
@@ -407,25 +444,28 @@ z <- iris[,5]
 clust_euclidian_inertia <- vector(length = 5)
 
 K=2
-clust_euclidian <- kmeans(X, K, nstart = 10)
+clust_euclidian <- kmeans(X, K, nstart = 100)
 clust_euclidian_inertia[K] <- clust_euclidian$tot.withinss
-#png(filename="imgs/K_means_choix_K.png")
+png(filename="imgs/K_means_iris_2.png")
 plot(X, col=clust_euclidian$cluster, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n euclidienne, K=2). Les symboles représentent les vraies classes.")
+```
 
+```{r}
 clust_adaptative_dist <- vector(length = 5)
-clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 100)
 clust_adaptative_dist[K] <- clust_adaptative$min_J_star
-#png(filename="imgs/K_means_choix_K.png")
+png(filename="imgs/K_means_adapt_iris_2.png")
 plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n adaptative, K=2). Les symboles représentent les vraies classes.")
 ```
+
 ```{r}
 K=3
-clust_euclidian <- kmeans(X, K, nstart = 10)
+clust_euclidian <- kmeans(X, K, nstart = 100)
 clust_euclidian_inertia[K] <- clust_euclidian$tot.withinss
 #png(filename="imgs/K_means_choix_K.png")
 plot(X, col=clust_euclidian$cluster, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n euclidienne, K=3). Les symboles représentent les vraies classes.")
 
-clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 100)
 clust_adaptative_dist[K] <- clust_adaptative$min_J_star
 #png(filename="imgs/K_means_choix_K.png")
 plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n adaptative, K=3). Les symboles représentent les vraies classes.")
@@ -433,12 +473,12 @@ plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classificatio
 
 ```{r}
 K=4
-clust_euclidian <- kmeans(X, K, nstart = 10)
+clust_euclidian <- kmeans(X, K, nstart = 100)
 clust_euclidian_inertia[K] <- clust_euclidian$tot.withinss
 #png(filename="imgs/K_means_choix_K.png")
 plot(X, col=clust_euclidian$cluster, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n euclidienne, K=4). Les symboles représentent les vraies classes.")
 
-clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 10)
+clust_adaptative <- K_means_distance_adaptative(X, K=K, n_iter_max = 100, n_ess = 100)
 clust_adaptative_dist[K] <- clust_adaptative$min_J_star
 #png(filename="imgs/K_means_choix_K.png")
 plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n adaptative, K=4). Les symboles représentent les vraies classes.")
@@ -446,7 +486,7 @@ plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classificatio
 
 ```{r}
 K=5
-clust_euclidian <- kmeans(X, K, nstart = 10)
+clust_euclidian <- kmeans(X, K, nstart = 100)
 clust_euclidian_inertia[K] <- clust_euclidian$tot.withinss
 #png(filename="imgs/K_means_choix_K.png")
 plot(X, col=clust_euclidian$cluster, pch=as.numeric(z), main = "Classification des iris de Fisher avec l'algorithme des K-means (distance\n euclidienne, K=5). Les symboles représentent les vraies classes.")
@@ -459,13 +499,15 @@ plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classificatio
 ```{r}
 #K-means avec distance euclidienne
 clust_euclidian_inertia[1] <- kmeans(X, 1, nstart = 10)$tot.withinss
-#png(filename="imgs/K_means_choix_K.png")
+png(filename="imgs/K_means_Iris_critere.png")
 plot(clust_euclidian_inertia, ylab="Inertie intraclasse", xlab = "K", main = "Inertie intraclasse en fonction du nombre de classes choisi.", ylim = c(0,700))
+```
 
+```{r}
 #K-means avec distance adaptative
 clust_adaptative_dist[1] <- K_means_distance_adaptative(X, K=1, n_iter_max = 100, n_ess = 10)$min_J_star
-#png(filename="imgs/K_means_choix_K.png")
-plot(clust_adaptative_dist, ylab="Distance", xlab = "K", main = "Distance en fonction du nombre de classes choisi.")
+png(filename="imgs/K_means_adapt_Iris_critere.png")
+plot(clust_adaptative_dist, ylab="Distance", xlab = "K", main = "Distance en fonction du nombre de classes choisi.", ylim=c(0,130))
 ```
 
 Spam
@@ -486,10 +528,9 @@ plot(ACP_spam, col=z)
 
 ```{r}
 K=2
-mask1 = ACP_spam[,1]<5000 && ACP_spam[,2]<500
-ACP_spam <- ACP_spam[mask, ]
-print(dim(ACP_spam))
-z <- z[mask]
+#ACP_spam <- ACP_spam[mask, ]
+#print(dim(ACP_spam))
+#z <- z[mask]
 clust_euclidian <- kmeans(ACP_spam, K, nstart = 10)
 #png(filename="imgs/K_means_choix_K.png")
 plot(ACP_spam, col=clust_euclidian$cluster, pch=z)

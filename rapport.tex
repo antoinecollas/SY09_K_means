@@ -295,5 +295,112 @@
         \item les ingrédients qui viennent s'ajouter au reste comme le vin, la moutarde, le poivre...
     \end{itemize}
 
+    \subsection*{Question 9}
+
+    \section{Classification par K-means avec distance adaptative}
+    \subsection{Programmation}
+
+    \subsection{Application}
+    Nous testons l'algorithme des K-means à distance adpatative à l'aide de jeux de données synthétiques, puis, comparons les résultats avec l'algorithme des K-means classique (utilisant la distance euclidienne).
+
+    Jeu de données synthétiques 1:
+
+
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_synth_1.png}
+          \caption{Algorithme des K-means.}
+          %\label{fig:sub1}
+        \end{subfigure}%
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_adapt_synth_1.png}
+          \caption{Algorithme des K-means à distance adaptative.}
+          %\label{fig:sub2}
+        \end{subfigure}
+        \caption{Clusterings effectués sur le jeu de données synthétiques 1. Les couleurs représentent les ensembles trouvés à l'aide des K-means, les symboles des points représentent les vraies partitions.}
+        \label{fig_synth_1}
+    \end{figure}
+
+    Les deux clusterings obtenus à l'aide des deux méthodes sont très proches.
+    Le Rand index ajusté des K-means "classiques" est de 0.98 et Rand index ajusté des K-means à distance adaptative est de 0.96.
+    Ces deux scores sont très bons puisque le maximum est de 1. Les partitions trouvées sont donc très proches des vraies partitions.
+
+
+    Jeu de données synthétiques 2:
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_synth_2.png}
+          \caption{Algorithme des K-means.}
+          %\label{fig:sub1}
+        \end{subfigure}%
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_adapt_synth_2.png}
+          \caption{Algorithme des K-means à distance adaptative.}
+          %\label{fig:sub2}
+        \end{subfigure}
+        \caption{Clusterings effectués sur le jeu de données synthétiques 2. Les couleurs représentent les ensembles trouvés à l'aide des K-means, les symboles des points représentent les vraies partitions.}
+        \label{fig_synth_2}
+    \end{figure}
+    Les deux clusterings obtenus à l'aide des deux méthodes sont très proches.
+    Les Rand index ajustés des K-means sont tous les deux de 0.85. Les partitions trouvées sont donc très proches des vraies partitions.
+    
+    Jeu de données synthétiques 3:
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_synth_3.png}
+          \caption{Algorithme des K-means.}
+          %\label{fig:sub1}
+        \end{subfigure}%
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_adapt_synth_3.png}
+          \caption{Algorithme des K-means à distance adaptative.}
+          %\label{fig:sub2}
+        \end{subfigure}
+        \caption{Clusterings effectués sur le jeu de données synthétiques 3. Les couleurs représentent les ensembles trouvés à l'aide des K-means, les symboles des points représentent les vraies partitions.}
+        \label{fig_synth_3}
+    \end{figure}
+    Les deux clusterings obtenus à l'aide des deux méthodes sont cette fois assez différents.
+    En effet, les deux ensembles qui forment la vraie partition sont assez proches l'un de l'autre mais ils ont une dispersion très différente.
+    En effet, l'un a une dispersion faible (inertie par rapport au centre de gravité de 0.17) alors que le second a une dispersion élevée (inertie par rapport au centre de gravité de 0.71).
+    L'algorithme des K-means "classiques" ne prend pas en compte la dispersion des classes et sépare donc mal les classes.
+    L'algorithme des K-means à distance adaptative prend en compte cette dispersion et sépare donc mieux les données.
+    Le Rand index ajusté des K-means "classiques" est de 0.04 et Rand index ajusté des K-means à distance adaptative est de 0.30.
+    Les partitions trouvées sont donc assez éloignées des vraies partitions mais l'algorithme des K-means à distance adpatative fait bien mieux que les K-means "classiques".
+    
+    Iris:
+
+    Nous déterminons les classifications avec les deux méthodes pour K=2,...,5. 
+    Nous obtenons les valeurs de criteres, en fonction de K, suivant:
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_Iris_critere.png}
+          \caption{Algorithme des K-means.}
+          %\label{fig:sub1}
+        \end{subfigure}%
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_adapt_Iris_critere.png}
+          \caption{Algorithme des K-means à distance adaptative.}
+          %\label{fig:sub2}
+        \end{subfigure}
+        \caption{Valeurs des critères en fonction de K sur le jeu de données des Iris.}
+        \label{fig_synth_3}
+    \end{figure}
+
+    Pour les K-means un bon K est K=2 (en utilisant la méthode du coude).
+    Pour les K-means à distance adaptative un bon K est plutôt 3 (toujours en utilisant la méthode du coude).
+
+
     \end{document}
 
