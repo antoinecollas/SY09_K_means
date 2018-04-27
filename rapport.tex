@@ -55,7 +55,7 @@
         
         % If you don't want a supervisor, uncomment the two lines below and remove the section above
         \Large \emph{Authors:}\\
-        Crauser \textsc{Julien} et Antoine \textsc{Collas}\\[3cm] % Your name
+        Antoine \textsc{Collas} et Julien \textsc{Crauser}\\[3cm] % Your name
         
         %----------------------------------------------------------------------------------------
         %	DATE SECTION
@@ -292,10 +292,15 @@
     \begin{itemize}
         \item les ingrédients pour les desserts
         \item les ingédients pour le plat principal
-        \item les ingrédients qui viennent s'ajouter au reste comme le vin, la moutarde, le poivre...
+        \item les ingrédients qui viennent s'ajouter au reste: les condiments, huiles et vin
     \end{itemize}
 
     \subsection*{Question 9}
+
+    En appliquant l'algorithme des K-médoïdes, avec K=3, au tableau de dissimilarités établi à la question 7 nous obtenons 3 médoides.
+    Ces médoïdes nous donnent des ingrédients représentant chaque classe.
+    Un ingrédient représentant la première classe est l'oeuf.
+    L'onion représente la deuxième classe. Le gingembre représente la dernière classe.
 
     \section{Classification par K-means avec distance adaptative}
     \subsection{Programmation}
@@ -347,6 +352,7 @@
         \caption{Clusterings effectués sur le jeu de données synthétiques 2. Les couleurs représentent les ensembles trouvés à l'aide des K-means, les symboles des points représentent les vraies partitions.}
         \label{fig_synth_2}
     \end{figure}
+
     Les deux clusterings obtenus à l'aide des deux méthodes sont très proches.
     Les Rand index ajustés des K-means sont tous les deux de 0.85. Les partitions trouvées sont donc très proches des vraies partitions.
     
@@ -418,6 +424,7 @@
         \caption{Classification pour K=2 sur le jeu de données des Iris.}
         \label{fig_synth_3}
     \end{figure}
+    
 
     \begin{figure}
         \centering

@@ -170,8 +170,6 @@ recettes_echant_quant <- recettes_echant[,-1]
 print(min(recettes_echant_quant))
 print(max(recettes_echant_quant))
 print(sum(is.na(recettes_echant_quant)))
-boxplot(recettes_echant_quant)
-#summary(recettes_pays)
 ```
 
 Question 7:
@@ -219,10 +217,16 @@ https://fr.wikipedia.org/wiki/Indice_et_distance_de_Jaccard
 ```{r}
 dist_ing_origin = dist(ing_origin, method = "binary")
 clust = hclust(dist_ing_origin, method="ward.D2")
-png(filename="imgs/CAH_dendrogramme_ingredients_binary.png", res=100, height=1000, width=1000)
+#png(filename="imgs/CAH_dendrogramme_ingredients_binary.png", res=100, height=1000, width=1000)
 plot(clust)
 ```
 
+Question 9:
+```{r}
+require(cluster)
+k_medoids = pam(dist_ing_origin, k=3, diss=TRUE)
+print(k_medoids)
+```
 
 Algorithme des k-means avec distance adaptative
 
@@ -513,7 +517,7 @@ plot(X, col=clust_adaptative$partition, pch=as.numeric(z), main = "Classificatio
 #K-means avec distance euclidienne
 clust_euclidian_inertia[1] <- kmeans(X, 1, nstart = 10)$tot.withinss
 png(filename="imgs/K_means_Iris_critere.png")
-plot(clust_euclidian_inertia, ylab="Inertie intraclasse", xlab = "K", main = "Inertie intraclasse en fonction du nombre de classes choisi.", ylim = c(0,700))
+barplot(clust_euclidian_inertia, ylab="Inertie intraclasse", xlab = "K", main = "Inertie intraclasse en fonction du nombre de classes choisi.", ylim = c(0,700))
 ```
 
 ```{r}
