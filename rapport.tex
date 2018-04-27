@@ -478,6 +478,42 @@
 
     \subsection{Justification}
     \subsection*{Question 10}
+    \begin{equation}
+        J(\{v_k, M_k\}_{k=1,...,K}) = \sum^{K}_{k=1}\sum^{n}_{i=1} z_{ik} \big[ (x_i-v_k)^\top M_k (x_i-v_k)\big]
+    \end{equation}
+
+    Soit $k\in \{1,...,K\}$
+
+    \begin{equation}
+        \frac{\partial J(\{v_k, M_k\})}{\partial v_k} = -\sum^{n}_{i=1} z_{ik} (M_k + {M_k}^\top) (x_i-v_k) = -(M_k + {M_k}^\top) \sum^{n}_{i=1} z_{ik} (x_i-v_k)
+    \end{equation}
+
+    Nous cherchons quand 
+
+    \begin{equation}
+        \frac{\partial J(\{v_k, M_k\})}{\partial v_k} = 0
+    \end{equation}
+
+    Comme $M_k$ est quelconque, il faut que:
+
+    \begin{equation}
+        \sum^{n}_{i=1} z_{ik} (x_i-v_k) = 0
+    \end{equation}
+    
+    En supposant $n_k \neq 0$:
+
+    \begin{equation}
+        \implies n_k \overline{x_k} - \sum_{i\in P_k} v_k = 0 \ avec \ \overline{x_k} = \frac{1}{n_k}\sum_{i=1}^{n}z_{ik}x_i
+    \end{equation}
+
+    \begin{equation}
+        \implies n_k \overline{x_k} - n_k v_k = 0
+    \end{equation}
+    
+    \begin{equation}
+        \implies v_k = \overline{x_k} = \frac{1}{n_k}\sum_{i=1}^{n}z_{ik}x_i
+    \end{equation}
+
     \subsection*{Question 11}
 
     \begin{equation}
@@ -554,6 +590,46 @@
 
     \begin{equation}
         {M_k}^{-1} = \frac{n_k}{\lambda_k \rho_k }V_k \ avec \ V_k = \frac{1}{n_k}\sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top
+        \label{eq_14}
+    \end{equation}
+
+    Donc, (en supposant $n_k \neq 0$):
+    \begin{equation}
+        \implies V_k = \frac{\lambda_k \rho_k}{n_k} {M_k}^{-1}
+    \end{equation}
+
+    \begin{equation}
+        \implies det(V_k) = det(\frac{\lambda_k \rho_k}{n_k} {M_k}^{-1})
+    \end{equation}
+
+    En utilisant la multilinéarité du déterminant et le fait que $V_k$ soit une matrice carrée de taille $p$:
+    \begin{equation}
+        \implies det(V_k) = \frac{{\lambda_k}^p {\rho_k}^p}{{n_k}^p} det({M_k}^{-1})
+    \end{equation}
+
+    De plus $det({M_k}^{-1}) = \frac{1}{det(M_k)} = \frac{1}{\rho_k}$
+
+    \begin{equation}
+        \implies \rho_k det(V_k) = \frac{{\lambda_k}^p {\rho_k}^{p}}{{n_k}^p}
+    \end{equation}
+
+    \begin{equation}
+        \implies \frac{{n_k}^p}{{\lambda_k}^p} = \frac{{\rho_k}^{p}}{\rho_k det(V_k)} 
+    \end{equation}
+
+    \begin{equation}
+        \implies \frac{n_k}{\lambda_k \rho_k} = \frac{1}{{\rho_k}^{\frac{1}{p}}{det(V_k)}^{\frac{1}{p}}}
+        \label{eq_20}
+    \end{equation}
+
+    En combinant les équations \ref{eq_14} et \ref{eq_20} nous obtenons:
+
+    \begin{equation}
+        {M_k}^{-1} = \frac{1}{{\rho_k}^{\frac{1}{p}}{det(V_k)}^{\frac{1}{p}}}V_k \ avec \ V_k = \frac{1}{n_k}\sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top
+    \end{equation}
+
+    \begin{equation}
+        \implies {M_k}^{-1} = (\rho_k det(V_k))^{-\frac{1}{p}}V_k \ avec \ V_k = \frac{1}{n_k}\sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top
     \end{equation}
 
     \end{document}
