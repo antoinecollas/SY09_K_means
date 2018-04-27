@@ -86,7 +86,7 @@
     Parmi ces 51 variables, une seule est qualitative (les origines des recettes) et 50 sont quantitaves.
     Ces dernières prennent leurs valeurs entre $0$ et $1$ ($0$ et $0.82$ pour être plus précis).
     Dans ce jeux de données les recettes ont été agrégées par origine, il y a donc 26 origines (une par ligne de notre tableau individus-variables).
-    De plus, le jeux de données ne présente aucunes valeurs manquantes.
+    De plus, le jeu de données ne présente aucunes valeurs manquantes.
     Cependant certaines origines sont à remarquer.
     En effet, il y a par exemple une distinction entre l'Afrique et le Maroc ou encore entre l'Asie et Chine, Japon, Vietnam, Thailande.
     De plus, les origines semblent être regroupées par région géographique mais des origines comme \"juive\",\"cadiens\", sont présentes.
@@ -239,7 +239,7 @@
     \subsection*{Question 5}
 
     \subsection*{Question 6}
-    Le jeux de données qui est fourni contient un échantillon avec 2000 recettes (2000 lignes).
+    Le jeu de données qui est fourni contient un échantillon avec 2000 recettes (2000 lignes).
     Il y a 26 régions (les mêmes que dans le jeu de données précédent) et 51 variables.
     Les valeurs sont binaires, 0 pour l'absence et 1 pour la présence d'un ingrédient.
     Il n'y a aucune valeur manquante.
@@ -375,7 +375,7 @@
         \label{fig_synth_3}
     \end{figure}
     Les deux clusterings obtenus à l'aide des deux méthodes sont cette fois assez différents.
-    En effet, les deux ensembles qui forment la vraie partition sont assez proches l'un de l'autre mais ils ont une dispersion très différente.
+    Les deux ensembles qui forment la vraie partition sont collés tout en ayant une dispersion très différente.
     En effet, l'un a une dispersion faible (inertie par rapport au centre de gravité de 0.17) alors que le second a une dispersion élevée (inertie par rapport au centre de gravité de 0.71).
     L'algorithme des K-means "classiques" ne prend pas en compte la dispersion des classes et sépare donc mal les classes.
     L'algorithme des K-means à distance adaptative prend en compte cette dispersion et sépare donc mieux les données.
@@ -401,7 +401,7 @@
           %\label{fig:sub2}
         \end{subfigure}
         \caption{Valeurs des critères en fonction de K sur le jeu de données des Iris.}
-        \label{fig_synth_3}
+        \label{fig_Iris_crit}
     \end{figure}
 
     Pour les K-means un bon K est K=2 (en utilisant la méthode du coude).
@@ -422,9 +422,14 @@
           %\label{fig:sub2}
         \end{subfigure}
         \caption{Classification pour K=2 sur le jeu de données des Iris.}
-        \label{fig_synth_3}
+        \label{fig_Iris_2}
     \end{figure}
     
+    Pour K=2 nous obtenons deux classifications très similaires.
+    En effet deux groupes d'individus se détachent très nettement: un premier avec l'espèce Setosa et un deuxième avec les deux autres espèces.
+    La distance adaptative n'apporte donc rien à ce problème de classification pour K=2.
+    Les deux index de Rand ajustés sont proches: 0.54 pour les K-means classiques et 0.57 pour les K-means à distance adaptative.
+    Les index ne sont pas élevés puisque nous avons mis K=2 alors que le jeu comporte en réalité 3 classes.
 
     \begin{figure}
         \centering
@@ -441,8 +446,34 @@
           %\label{fig:sub2}
         \end{subfigure}
         \caption{Classification pour K=3 sur le jeu de données des Iris.}
-        \label{fig_synth_3}
+        \label{fig_Iris_3}
     \end{figure}
+
+    Pour K=3, les deux classifications sont assez différentes.
+    En effet, dans les deux cas, nous retrouvons un premier groupe avec l'espèce Setosa mais les deux autres groupes sont formés différemment.
+    L'algorithme des K-means à distance adaptative sépare les données de manière très proche par rapport aux classes exactes.
+    En effet nous avons un index de Rand ajusté de 0.87 alors que pour l'algorithme des k-means classique l'index de Rand est de 0.73.
+    Cela s'explique par le fait les K-means à distance adaptative s'adaptent beaucoup mieux aux différentes dispersions des données.
+    Les individus de l'espèce Virginica sont bien plus dispersés que ceux de l'espèce Versicolor. Cela est visible sur la figure \ref{fig_Iris_3_sepal_petal}.
+
+    \begin{figure}
+        \centering
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_iris_3_sepal_petal.png}
+          \caption{Algorithme des K-means.}
+          %\label{fig:sub1}
+        \end{subfigure}%
+        \begin{subfigure}{.5\textwidth}
+          \centering
+          \includegraphics[width=.8\linewidth]{imgs/K_means_adapt_iris_3_sepal_petal.png}
+          \caption{Algorithme des K-means à distance adaptative.}
+          %\label{fig:sub2}
+        \end{subfigure}
+        \caption{Classification pour K=3 sur le jeu de données des Iris.(rond: Setosa, triangle: Versicolor, plus: Virginica).}
+        \label{fig_Iris_3_sepal_petal}
+    \end{figure}
+
 
     \end{document}
 
