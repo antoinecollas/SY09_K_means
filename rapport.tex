@@ -474,6 +474,87 @@
         \label{fig_Iris_3_sepal_petal}
     \end{figure}
 
+    Spam:
+
+    \subsection{Justification}
+    \subsection*{Question 10}
+    \subsection*{Question 11}
+
+    \begin{equation}
+        J(\{v_k, M_k\}_{k=1,...,K}) = \sum^{K}_{k=1}\sum^{n}_{i=1} z_{ik} \big[ (x_i-v_k)^\top M_k (x_i-v_k)\big]
+    \end{equation}
+
+    Soit $k\in \{1,...,K\}$
+
+    \begin{equation}
+        \frac{\partial L(\{v_k, M_k, \lambda_k\})}{\partial M_k} = \frac{\partial J(\{v_k, M_k\})}{\partial M_k} - \frac{\partial\big[ \sum^{K}_{q=1} \lambda_q (det M_q - \rho_q)\big]}{\partial M_k}
+    \end{equation}
+
+    \begin{equation}
+        \frac{\partial J(\{v_k, M_k\})}{\partial M_k} = \sum^{n}_{i=1} z_{ik} \frac{\partial \big[(x_i-v_k)^\top M_k (x_i-v_k)\big]}{M_k} =  \sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top
+    \end{equation}
+    
+    \begin{equation}
+        \frac{\partial \big[\sum^{K}_{q=1} \lambda_q (det M_q - \rho_q)\big]}{\partial M_k} = \lambda_k \frac{\partial det M_k}{\partial M_k} = \lambda_k det M_k ({M_k}^{-1})^\top
+    \end{equation}
+
+    donc,
+    \begin{equation}
+        \frac{\partial L(\{v_k, M_k, \lambda_k\})}{\partial M_k} = \sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top - \lambda_k det M_k ({M_k}^{-1})^\top
+    \end{equation}
+
+    Nous cherchons quand 
+
+    \begin{equation}
+        \frac{\partial L(\{v_k, M_k, \lambda_k\})}{\partial M_k} = 0
+    \end{equation}
+
+    donc,
+
+    \begin{equation}
+        \lambda_k det M_k ({M_k}^{-1})^\top = \sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top
+    \end{equation}
+
+    en supposant que $det M_k \neq 0$ et $\lambda_k \neq 0$
+
+    \begin{equation}
+        \iff ({M_k}^{-1})^\top = \frac{1}{\lambda_k det M_k }\sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top
+        \label{eq_8}
+    \end{equation}
+
+    en appliquant la transposée de chaque côté de l'équation et $(A+B)^\top = A^\top + B^\top$ et $(AB)^\top = B^\top A^\top$
+
+    \begin{equation}
+        \iff {M_k}^{-1} = \frac{1}{\lambda_k det M_k }\sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top
+    \end{equation}
+
+    \begin{equation}
+        \iff {M_k}^{-1} = \frac{n_k}{\lambda_k det M_k }V_k \ avec \ V_k = \frac{1}{n_k}\sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top
+        \label{eq_9}
+    \end{equation}
+
+    De plus, comme $J$ ne dépend pas de $\lambda_k$:
+
+    \begin{equation}
+        \frac{\partial L(\{v_k, M_k, \lambda_k\})}{\partial \lambda_k} = detM_k - \rho_k
+    \end{equation}
+    
+    Nous cherchons quand,
+
+    \begin{equation}
+        \frac{\partial L(\{v_k, M_k, \lambda_k\})}{\partial \lambda_k} = 0
+    \end{equation}
+    \begin{equation}
+        \iff detM_k = \rho_k
+        \label{eq_13}
+    \end{equation}
+    Donc si $\rho_k \neq 0$ alors $det M_k \neq 0$, ce qui montre que l'hypothèse faite pour obtenir l'équation \ref{eq_8} est réaliste.
+
+    En combinant les équations \ref{eq_9} et \ref{eq_13}, nous obtenons:
+
+    \begin{equation}
+        {M_k}^{-1} = \frac{n_k}{\lambda_k \rho_k }V_k \ avec \ V_k = \frac{1}{n_k}\sum^{n}_{i=1} z_{ik} (x_i-v_k)(x_i-v_k)^\top
+    \end{equation}
 
     \end{document}
 
