@@ -173,28 +173,6 @@ print(sum(is.na(recettes_echant_quant)))
 ```
 
 Question 7:
-Pas sur que ce soit bon...
-```{r}
-aggr <- by(recettes_echant_quant, INDICES=recettes_echant$origin, FUN=colSums)
-ing_origin <- as.data.frame(do.call(cbind,aggr))
-ing_origin <- ing_origin[order(row.names(ing_origin)),] 
-#verification
-#print(sum(ing_origin[1,]))
-#print(sum(recettes_echant_quant$basil))
-nb_recettes_origine = data.frame(t(summary(recettes_echant$origin)))
-nb_recettes_origine <- do.call("rbind", replicate(dim(ing_origin)[1], nb_recettes_origine, simplify = FALSE))
-ing_origin <- ing_origin / nb_recettes_origine
-print(ing_origin)
-```
-
-```{r}
-dist_ing_origin = dist(ing_origin)
-clust = hclust(dist_ing_origin, method="ward.D2")
-png(filename="imgs/CAH_dendrogramme_ingredients.png", res=100, height=1000, width=1000)
-plot(clust)
-```
-
-Deuxième essai de la question 7:
 ```{r}
 ing_origin <- data.frame(t(recettes_echant[,-1]))
 ing_origin <- ing_origin[order(row.names(ing_origin)),] 
@@ -569,7 +547,45 @@ print(summary_ACP)
 ACP_spam = data.frame(res$x[,c(1,2)], row.names = rownames(Spam))
 ACP_spam_23 = data.frame(res$x[,c(2,3)], row.names = rownames(Spam))
 ACP_spam_123 = data.frame(res$x[,c(1,2,3)], row.names = rownames(Spam))
+png(filename="imgs/Spam_ACP.png")
+plot(ACP_spam, col=z)
 ```
+```{r}
+clust_adaptative <- K_means_distance_adaptative(ACP_spam, K=2, n_iter_max = 100, n_ess = 10)
+png(filename="imgs/Spam_ACP_k_means_adaptative.png")
+plot(ACP_spam, col=clust_adaptative$partition)
+print(adjustedRandIndex(z, clust_adaptative$partition))
+```
+
+```{r}
+ACP_spam_scaled = scale(x = ACP_spam, center = TRUE, scale = TRUE)
+plot(ACP_spam_scaled, col=z)
+clust_adaptative <- K_means_distance_adaptative(ACP_spam_scaled, K=2, n_iter_max = 100, n_ess = 10)
+plot(ACP_spam_scaled, col=clust_adaptative$partition)
+print(adjustedRandIndex(z, clust_adaptative$partition))
+print(adjustedRandIndex(z, integer(length(z))))
+```
+```{r}
+ACP_spam_partial =  ACP_spam[ACP_spam[,1]<4500,]
+z_partial = z[ACP_spam[,1]<4500]
+ACP_spam_partial_scaled = scale(x = ACP_spam_partial, center = TRUE, scale = TRUE)
+plot(ACP_spam_partial_scaled, col=z_partial)
+clust_adaptative <- K_means_distance_adaptative(ACP_spam_partial_scaled, K=2, n_iter_max = 100, n_ess = 10)
+plot(ACP_spam_partial_scaled, col=clust_adaptative$partition)
+print(adjustedRandIndex(z_partial, clust_adaptative$partition))
+```
+
+```{r}
+library(randomForest)
+fit <- randomForest(ACP_spam, factor(z))
+print(fit$confusion)
+print(fit$importance)
+print(adjustedRandIndex(z, fit$predicted))
+tree <- getTree(fit, 1, labelVar=TRUE)
+print(tree)
+```
+
+
 ```{r}
 plot(ACP_spam, col=z)
 plot(ACP_spam_23, col=z)
