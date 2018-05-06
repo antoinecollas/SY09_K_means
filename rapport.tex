@@ -476,6 +476,28 @@
 
     Spam:
 
+    Nous commençons par traiter les données en utilisant une ACP.
+    99.8\% de la variance totale est contenue dans les 2 premiers axes de l'ACP.
+    Nous réduisons donc l'espace en un espace de dimension 2.
+    \begin{figure}
+        \centering
+        \includegraphics[width=.5\linewidth]{imgs/Spam_ACP.png}
+        \caption{Ensemble des données après ACP. Les couleurs représentent les 2 classes.}
+        \label{fig_spam_ACP}
+    \end{figure}
+
+    Nous pouvons observer sur la figure \ref{fig_spam_ACP} que les spams et non-spams se superposent pour les valeurs négatives du deuxième axe.
+    Cette superposition montre qu'il est difficile de trouver une séparation entre les spams et non-spams avec un algorithme non supervisé puisque les algorithmes non supervisés fonctionnent par recherche de similarité.
+
+    En utilisant les K-means à distance adaptative implémenté précédemment nous trouvons la classification visible sur la figure \ref{fig_spam_k_means_adaptative}.
+    Malheureusement, le résultat n'est pas très bon puisque l'index de Rand ajusté est de 0.05.
+    \begin{figure}
+        \centering
+        \includegraphics[width=.5\linewidth]{imgs/Spam_ACP_k_means_adaptative.png}
+        \caption{Classification en utilisant les k-means à distance adaptative. Les couleurs représentent les 2 classes.}
+        \label{fig_spam_k_means_adaptative}
+    \end{figure}
+
     \subsection{Justification}
     \subsection*{Question 10}
     \begin{equation}
